@@ -1,0 +1,171 @@
+on:
+  pull_request: {}
+  push:
+    branches:
+      - main
+      - releases/**
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  dotnet:
+    strategy:
+      matrix:
+        configuration:
+          - debug
+          - release
+        runtime:
+          - agnostic
+          - windows
+          - linux
+          - macos
+        exclude:
+          - configuration: debug
+            runtime: windows
+          - configuration: debug
+            runtime: linux
+          - configuration: debug
+            runtime: macos
+        include:
+          - msbuild.arguments: |
+              -property:BuildId=${{ github.run_number }}
+              -property:BuildSourceBranch=${{ github.ref }}
+              -consoleLoggerParameters:NoSummary
+            dotnet.test.arguments: |
+              --logger
+              trx
+              --results-directory
+              ./TestResults
+          - configuration: debug
+            configuration.id: Debug
+            configuration.display: Debug
+          - configuration: release
+            configuration.id: Release
+            configuration.display: Release
+          - runtime: agnostic
+            os: windows-latest
+            dotnet.test.arguments.runtime: |
+              --collect
+              Code Coverage
+          - runtime: windows
+            os: windows-latest
+            runtime.id: win10-x64
+            runtime.display: (Windows, 64-bit)
+            artifact.name.suffix: -windows
+          - runtime: linux
+            os: ubuntu-latest
+            runtime.id: linux-x64
+            runtime.display: (Linux, 64-bit)
+            artifact.name.suffix: -linux
+          - runtime: macos
+            os: macos-latest
+            runtime.id: osx-x64
+            runtime.display: (macOS, 64-bit)
+            artifact.name.suffix: -macos
+    name: ${{ matrix['configuration.display'] }} ${{ matrix['runtime.display'] }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Chekout ${{ github.repository }}@${{ github.ref }}
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Prepare .NET SDK action
+        uses: ./def/typescript-action-prepare
+        with:
+          action-name: dotnet-sdk
+      - name: .NET Version Information
+        uses: ./def/dotnet-version-info
+      - name: dotnet restore
+        uses: ./def/dotnet-sdk
+        with:
+          command: restore
+          project: |
+            [Rr]ef/**/*.*proj
+            [Ss]rc/**/*.*proj
+            [Tt]ests?/**/*.*proj
+            [Ss]amples?/**/*.*proj
+          configuration: ${{ matrix['configuration.id'] }}
+          runtime: ${{ matrix['runtime.id'] }}
+          msbuild-arguments: ${{ matrix['msbuild.arguments'] }}
+      - name: dotnet build
+        uses: ./def/dotnet-sdk
+        with:
+          command: build
+          project: |
+            [Rr]ef/**/*.*proj
+            [Ss]rc/**/*.*proj
+            [Tt]ests?/**/*.*proj
+            [Ss]amples?/**/*.*proj
+          configuration: ${{ matrix['configuration.id'] }}
+          runtime: ${{ matrix['runtime.id'] }}
+          dotnet-arguments: --nologo
+          msbuild-arguments: ${{ matrix['msbuild.arguments'] }}
+      - name: dotnet test
+        uses: ./def/dotnet-sdk
+        with:
+          command: test
+          project: |
+            [Tt]ests?/**/*.*proj
+          configuration: ${{ matrix['configuration.id'] }}
+          runtime: ${{ matrix['runtime.id'] }}
+          dotnet-arguments: |
+            --nologo
+            ${{ matrix['dotnet.test.arguments'] }}
+            ${{ matrix['dotnet.test.arguments.runtime'] }}
+          msbuild-arguments: ${{ matrix['msbuild.arguments'] }}
+      - name: Upload .NET Test Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ github.repository_owner }}-${{ github.event.repository.name }}-testresults-${{ matrix.configuration }}${{ matrix['artifact.name.suffix'] }}
+          path: |
+            TestResults
+          if-no-files-found: ignore
+        continue-on-error: true
+      - name: Determine Package and Publishing
+        shell: pwsh
+        run: |
+          $packageTaskEnv = "DOTNET_CI_PACKAGE_TASK=${{ matrix['runtime'] == 'agnostic' }}"
+          $packageTaskEnv | Out-File -LiteralPath $ENV:GITHUB_ENV -Append -Encoding utf8
+      - name: dotnet pack
+        id: dotnet_pack
+        if: ${{ env['DOTNET_CI_PACKAGE_TASK'] == 'true' }}
+        uses: ./def/dotnet-sdk
+        with:
+          command: pack
+          project: |
+            [Ss]rc/**/*.*proj
+          configuration: ${{ matrix['configuration.id'] }}
+          runtime: ${{ matrix['runtime.id'] }}
+          dotnet-arguments: |
+            --nologo
+            --output
+            packages/bld
+          msbuild-arguments: ${{ matrix['msbuild.arguments'] }}
+      - name: Upload Nuget artifacts
+        if: ${{ steps.dotnet_pack.outcome == 'success' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ github.repository_owner }}-${{ github.event.repository.name }}-nupkg-${{ matrix.configuration }}${{ matrix['artifact.name.suffix'] }}
+          path: packages/bld
+      - name: dotnet publish
+        id: dotnet_publish
+        uses: ./def/dotnet-sdk
+        with:
+          command: build
+          project: |
+            [Ss]rc/**/*.*proj
+            [Ss]amples?/**/*.*proj
+          configuration: ${{ matrix['configuration.id'] }}
+          runtime: ${{ matrix['runtime.id'] }}
+          dotnet-arguments: --nologo
+          msbuild-arguments: |
+            -property:InnerTargets=Publish
+            ${{ matrix['msbuild.arguments'] }}
+      - name: Upload Build Publish artifacts
+        if: ${{ steps.dotnet_publish.outcome == 'success' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ github.repository_owner }}-${{ github.event.repository.name }}-publish-${{ matrix.configuration }}${{ matrix['artifact.name.suffix'] }}
+          path: publish
