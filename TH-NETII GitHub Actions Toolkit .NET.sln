@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.6.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{598EC68F-DD2A-48D9-9B73-CFE8FA34EC3A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "THNETII.GitHubActions.MSBuild.Logger", "src\THNETII.GitHubActions.MSBuild.Logger\THNETII.GitHubActions.MSBuild.Logger.csproj", "{14A5EE0A-71E1-4854-911F-70ED1BE6BE50}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "THNETII.GitHubActions.Toolkit.Core", "src\THNETII.GitHubActions.Toolkit.Core\THNETII.GitHubActions.Toolkit.Core.csproj", "{AEB565BC-D509-4E91-9DF9-CC25BCCBC788}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E039A933-8EE6-4A85-A5DA-4626DF6AA10F}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		.github\dependabot.yml = .github\dependabot.yml
+		Directory.Build.props = Directory.Build.props
+		Directory.Meta.props = Directory.Meta.props
+		.github\workflows\dotnet-ci.yml = .github\workflows\dotnet-ci.yml
+		LICENSE = LICENSE
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14A5EE0A-71E1-4854-911F-70ED1BE6BE50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14A5EE0A-71E1-4854-911F-70ED1BE6BE50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14A5EE0A-71E1-4854-911F-70ED1BE6BE50}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{14A5EE0A-71E1-4854-911F-70ED1BE6BE50}.Debug|x64.Build.0 = Debug|Any CPU
+		{14A5EE0A-71E1-4854-911F-70ED1BE6BE50}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{14A5EE0A-71E1-4854-911F-70ED1BE6BE50}.Debug|x86.Build.0 = Debug|Any CPU
+		{14A5EE0A-71E1-4854-911F-70ED1BE6BE50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14A5EE0A-71E1-4854-911F-70ED1BE6BE50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14A5EE0A-71E1-4854-911F-70ED1BE6BE50}.Release|x64.ActiveCfg = Release|Any CPU
+		{14A5EE0A-71E1-4854-911F-70ED1BE6BE50}.Release|x64.Build.0 = Release|Any CPU
+		{14A5EE0A-71E1-4854-911F-70ED1BE6BE50}.Release|x86.ActiveCfg = Release|Any CPU
+		{14A5EE0A-71E1-4854-911F-70ED1BE6BE50}.Release|x86.Build.0 = Release|Any CPU
+		{AEB565BC-D509-4E91-9DF9-CC25BCCBC788}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEB565BC-D509-4E91-9DF9-CC25BCCBC788}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEB565BC-D509-4E91-9DF9-CC25BCCBC788}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AEB565BC-D509-4E91-9DF9-CC25BCCBC788}.Debug|x64.Build.0 = Debug|Any CPU
+		{AEB565BC-D509-4E91-9DF9-CC25BCCBC788}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AEB565BC-D509-4E91-9DF9-CC25BCCBC788}.Debug|x86.Build.0 = Debug|Any CPU
+		{AEB565BC-D509-4E91-9DF9-CC25BCCBC788}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEB565BC-D509-4E91-9DF9-CC25BCCBC788}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEB565BC-D509-4E91-9DF9-CC25BCCBC788}.Release|x64.ActiveCfg = Release|Any CPU
+		{AEB565BC-D509-4E91-9DF9-CC25BCCBC788}.Release|x64.Build.0 = Release|Any CPU
+		{AEB565BC-D509-4E91-9DF9-CC25BCCBC788}.Release|x86.ActiveCfg = Release|Any CPU
+		{AEB565BC-D509-4E91-9DF9-CC25BCCBC788}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{14A5EE0A-71E1-4854-911F-70ED1BE6BE50} = {598EC68F-DD2A-48D9-9B73-CFE8FA34EC3A}
+		{AEB565BC-D509-4E91-9DF9-CC25BCCBC788} = {598EC68F-DD2A-48D9-9B73-CFE8FA34EC3A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1BA155EA-6AC5-414B-81E1-D63FD98BF284}
+	EndGlobalSection
+EndGlobal
