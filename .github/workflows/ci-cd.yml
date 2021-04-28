@@ -72,13 +72,13 @@ jobs:
         with:
           submodules: recursive
       - name: Prepare .NET SDK action
-        uses: ./def/typescript-action-prepare
+        uses: thnetii/gh-actions/typescript-action-prepare@main
         with:
           action-name: dotnet-sdk
       - name: .NET Version Information
-        uses: ./def/dotnet-version-info
+        uses: thnetii/gh-actions/dotnet-version-info@main
       - name: dotnet restore
-        uses: ./def/dotnet-sdk
+        uses: thnetii/gh-actions/dotnet-sdk@main
         with:
           command: restore
           project: |
@@ -90,7 +90,7 @@ jobs:
           runtime: ${{ matrix['runtime.id'] }}
           msbuild-arguments: ${{ matrix['msbuild.arguments'] }}
       - name: dotnet build
-        uses: ./def/dotnet-sdk
+        uses: thnetii/gh-actions/dotnet-sdk@main
         with:
           command: build
           project: |
@@ -103,7 +103,7 @@ jobs:
           dotnet-arguments: --nologo
           msbuild-arguments: ${{ matrix['msbuild.arguments'] }}
       - name: dotnet test
-        uses: ./def/dotnet-sdk
+        uses: thnetii/gh-actions/dotnet-sdk@main
         with:
           command: test
           project: |
@@ -131,7 +131,7 @@ jobs:
       - name: dotnet pack
         id: dotnet_pack
         if: ${{ env['DOTNET_CI_PACKAGE_TASK'] == 'true' }}
-        uses: ./def/dotnet-sdk
+        uses: thnetii/gh-actions/dotnet-sdk@main
         with:
           command: pack
           project: |
@@ -151,7 +151,7 @@ jobs:
           path: packages/bld
       - name: dotnet publish
         id: dotnet_publish
-        uses: ./def/dotnet-sdk
+        uses: thnetii/gh-actions/dotnet-sdk@main
         with:
           command: build
           project: |
