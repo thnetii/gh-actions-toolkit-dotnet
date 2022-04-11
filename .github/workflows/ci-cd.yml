@@ -116,7 +116,7 @@ jobs:
             ${{ matrix['dotnet.test.arguments.runtime'] }}
           msbuild-arguments: ${{ matrix['msbuild.arguments'] }}
       - name: Upload .NET Test Results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ github.repository_owner }}-${{ github.event.repository.name }}-testresults-${{ matrix.configuration }}${{ matrix['artifact.name.suffix'] }}
           path: |
@@ -145,7 +145,7 @@ jobs:
           msbuild-arguments: ${{ matrix['msbuild.arguments'] }}
       - name: Upload Nuget artifacts
         if: ${{ steps.dotnet_pack.outcome == 'success' }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ github.repository_owner }}-${{ github.event.repository.name }}-nupkg-${{ matrix.configuration }}${{ matrix['artifact.name.suffix'] }}
           path: packages/bld
@@ -165,7 +165,7 @@ jobs:
             ${{ matrix['msbuild.arguments'] }}
       - name: Upload Build Publish artifacts
         if: ${{ steps.dotnet_publish.outcome == 'success' }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ github.repository_owner }}-${{ github.event.repository.name }}-publish-${{ matrix.configuration }}${{ matrix['artifact.name.suffix'] }}
           path: publish
